@@ -6,7 +6,7 @@
 //! entry given the first, and `_rev` is the opposite.
 //!
 //! This crate is best for values that are cheap to clone, since internally it stores two copies
-//! of each element. To use it with large values, consider wrapping them in `Rc to make them cheap
+//! of each element. To use it with large values, consider wrapping them in `Rc` to make them cheap
 //! to clone.
 
 use std::borrow::Borrow;
@@ -20,7 +20,11 @@ pub struct Bimap<K, V, S = RandomState> {
     rev: HashMap<V, K, S>,
 }
 
-impl<K: Eq + Hash + Clone, V: Eq + Hash + Clone> Bimap<K, V, RandomState> {
+impl<K, V> Bimap<K, V, RandomState>
+where
+    K: Eq + Hash + Clone,
+    V: Eq + Hash + Clone,
+{
     /// Creates an empty `Bimap`.
     pub fn new() -> Self {
         Self {
@@ -30,7 +34,12 @@ impl<K: Eq + Hash + Clone, V: Eq + Hash + Clone> Bimap<K, V, RandomState> {
     }
 }
 
-impl<K: Eq + Hash + Clone, V: Eq + Hash + Clone, S: BuildHasher + Clone + Default> Bimap<K, V, S> {
+impl<K, V, S> Bimap<K, V, S>
+where
+    K: Eq + Hash + Clone,
+    V: Eq + Hash + Clone,
+    S: BuildHasher + Clone + Default,
+{
     /// Creates a `Bimap` with the given hasher.
     pub fn with_hasher(hash_builder: S) -> Self {
         Self {
@@ -138,8 +147,11 @@ impl<K: Eq + Hash + Clone, V: Eq + Hash + Clone, S: BuildHasher + Clone + Defaul
     }
 }
 
-impl<K: Eq + Hash + Clone, V: Eq + Hash + Clone, S: BuildHasher + Clone + Default> Default
-    for Bimap<K, V, S>
+impl<K, V, S> Default for Bimap<K, V, S>
+where
+    K: Eq + Hash + Clone,
+    V: Eq + Hash + Clone,
+    S: BuildHasher + Clone + Default,
 {
     fn default() -> Self {
         Bimap::with_hasher(Default::default())

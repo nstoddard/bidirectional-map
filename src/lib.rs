@@ -86,6 +86,16 @@ where
         }
     }
 
+    /// Gets the forward `HashMap`.
+    pub fn fwd(&self) -> &HashMap<K, V, S> {
+        &self.fwd
+    }
+
+    /// Gets the reverse `HashMap`.
+    pub fn rev(&self) -> &HashMap<V, K, S> {
+        &self.rev
+    }
+
     /// Gets the value corresponding to a key.
     pub fn get_fwd<KeyBorrow: ?Sized>(&self, k: &KeyBorrow) -> Option<&V>
     where

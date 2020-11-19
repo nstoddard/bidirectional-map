@@ -12,7 +12,7 @@ use std::collections::hash_map::*;
 use std::default::Default;
 use std::hash::{BuildHasher, Hash};
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Bimap<K, V, S = RandomState> {
     fwd: HashMap<K, V, S>,
     rev: HashMap<V, K, S>,
@@ -76,13 +76,13 @@ where
             Entry::Vacant(entry) => {
                 entry.insert(v.clone());
             }
-            Entry::Occupied(_) => panic!("Element aready in bimap"),
+            Entry::Occupied(_) => panic!("Element already in bimap"),
         }
         match self.rev.entry(v) {
             Entry::Vacant(entry) => {
                 entry.insert(k);
             }
-            Entry::Occupied(_) => panic!("Element aready in bimap"),
+            Entry::Occupied(_) => panic!("Element already in bimap"),
         }
     }
 
@@ -121,7 +121,7 @@ where
         KeyBorrow: Hash + Eq,
     {
         let v = self.fwd.remove(k).unwrap();
-        self.rev.remove(&v);
+        self.rev.remove(&v).unwrap();
         v
     }
 
@@ -132,7 +132,7 @@ where
         ValBorrow: Hash + Eq,
     {
         let k = self.rev.remove(v).unwrap();
-        self.fwd.remove(&k);
+        self.fwd.remove(&k).unwrap();
         k
     }
 

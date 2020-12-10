@@ -1,6 +1,6 @@
 [package]
 name = "bidirectional-map"
-version = "0.1.3"
+version = "0.1.4"
 authors = ["Nathan Stoddard"]
 description = "A two-way map data structure for small keys and values"
 license = "MIT"
@@ -10,4 +10,3 @@ repository = "https://github.com/nstoddard/bidirectional-map"
 [lib]
 name = "bidirectional_map"
 doc = true
-

@@ -11,6 +11,7 @@ use std::borrow::Borrow;
 use std::collections::hash_map::*;
 use std::default::Default;
 use std::hash::{BuildHasher, Hash};
+use std::iter::{FromIterator, IntoIterator};
 
 #[derive(Clone, Debug)]
 pub struct Bimap<K, V, S = RandomState> {
@@ -157,6 +158,34 @@ where
     /// Iterates over all (key, value) pairs in the bimap.
     pub fn iter(&self) -> Iter<K, V> {
         self.fwd.iter()
+    }
+}
+
+impl<K, V, S> FromIterator<(K, V)> for Bimap<K, V, S>
+where
+    K: Eq + Hash + Clone,
+    V: Eq + Hash + Clone,
+    S: BuildHasher + Clone + Default,
+{
+    fn from_iter<T>(iter: T) -> Self
+    where
+        T: IntoIterator<Item = (K, V)>,
+    {
+        Bimap::from_hash_map(iter.into_iter().collect())
+    }
+}
+
+impl<K, V, S> IntoIterator for Bimap<K, V, S>
+where
+    K: Eq + Hash + Clone,
+    V: Eq + Hash + Clone,
+    S: BuildHasher + Clone + Default,
+{
+    type Item = (K, V);
+    type IntoIter = IntoIter<K, V>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.fwd.into_iter()
     }
 }
 
